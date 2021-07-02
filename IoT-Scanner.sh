@@ -44,7 +44,8 @@ case $opt in
 	printf "%bTesting $ips live device/s on the network\n" "$GREEN"
 	printf "%b\n" "$NC"
 
-	touch user.txt; echo admin >> user.txt; echo root >> user.txt; echo ubnt >> user.txt; echo support >> user.txt; echo service >> user.txt; echo guest >> user.txt; echo root >> user.txt
+	#Creating username and password file.
+	touch user.txt; echo admin >> user.txt; echo root >> user.txt; echo ubnt >> user.txt; echo support >> user.txt; echo service >> user.txt; echo guest >> user.txt; echo root >> user.txt 
 	touch pass.txt; echo admin >> pass.txt; echo root >> pass.txt; echo password >> pass.txt; echo guest >> pass.txt; echo service >> pass.txt; echo guest >> pass.txt; echo toor >> pass.txt
 
 	open=$(nmap -iL lips.txt -p 23 | grep -E 'open' | awk '{print $2}' | wc | awk '{print $1}')
