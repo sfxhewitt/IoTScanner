@@ -40,7 +40,7 @@ case $opt in
 
 	grep Host lips.txt | awk '{print $2}' > temp.txt; mv temp.txt lips.txt #Extracting the IP addresses and saving them.
 
-	ips="$(wc lips.txt | awk '{print $1}')"
+	ips="$(wc lips.txt | awk '{print $1}')" # This calculates the number of live devices.
 	printf "%bTesting $ips live device/s on the network\n" "$GREEN"
 	printf "%b\n" "$NC"
 
