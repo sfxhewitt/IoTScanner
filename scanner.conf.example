@@ -1,0 +1,21 @@
+# IoT Scanner Configuration File
+# Copy this file to scanner.conf and customize as needed.
+#
+# Usage: ./IoT-Scanner.sh -c scanner.conf
+
+# Ports to scan
+SSH_PORT=22
+TELNET_PORT=23
+
+# Brute-force timeout per host (nmap duration format: e.g. 8s, 1m)
+SCAN_TIMEOUT=8s
+
+# Custom wordlists (absolute paths recommended)
+# USER_FILE=/path/to/usernames.txt
+# PASS_FILE=/path/to/passwords.txt
+
+# Output directory for credential result files
+# OUTPUT_DIR=/var/log/iot-scanner/results
+
+# Log file path
+# LOG_FILE=/var/log/iot-scanner/scanner.log
